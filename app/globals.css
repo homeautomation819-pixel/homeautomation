@@ -1,0 +1,197 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------- Theme tokens: light is default, .dark overrides ---------- */
+:root {
+  --c-bg: 248 250 252;        /* slate-50  */
+  --c-surface: 255 255 255;   /* white     */
+  --c-raised: 241 245 249;    /* slate-100 */
+  --c-line: 226 232 240;      /* slate-200 */
+  --c-line2: 203 213 225;     /* slate-300 */
+  --c-heading: 15 23 42;      /* slate-900 */
+  --c-strong: 30 41 59;       /* slate-800 */
+  --c-body: 51 65 85;         /* slate-700 */
+  --c-muted: 100 116 139;     /* slate-500 */
+  --c-faint: 100 116 139;
+  --c-faintest: 148 163 184;  /* slate-400 */
+  --c-accent-blue: 37 99 235; /* blue-600  */
+  --c-accent-cyan: 14 116 144; /* cyan-700: 4.5:1 on white */
+  --c-accent-amber: 180 83 9;  /* amber-700: 4.5:1 with white text */
+}
+
+.dark {
+  --c-bg: 6 8 15;
+  --c-surface: 10 14 26;
+  --c-raised: 14 19 34;
+  --c-line: 19 26 46;
+  --c-line2: 28 37 64;
+  --c-heading: 255 255 255;
+  --c-strong: 226 232 240;
+  --c-body: 203 213 225;
+  --c-muted: 148 163 184;
+  --c-faint: 100 116 139;
+  --c-faintest: 71 85 105;
+  --c-accent-blue: 59 130 246;
+  --c-accent-cyan: 34 211 238;
+  --c-accent-amber: 245 158 11;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-ink-950 text-slate-300 antialiased;
+  }
+  details > summary {
+    list-style: none;
+    cursor: pointer;
+  }
+  details > summary::-webkit-details-marker {
+    display: none;
+  }
+  details[open] .faq-chevron {
+    transform: rotate(180deg);
+  }
+}
+
+@layer components {
+  .container-site {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-accent-blue px-6 py-3 text-base font-semibold shadow-glow transition hover:brightness-110 hover:-translate-y-0.5;
+    color: #ffffff;
+  }
+  .btn-amber {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-accent-amber px-6 py-3 text-base font-semibold shadow-glow-amber transition hover:brightness-105 hover:-translate-y-0.5;
+    color: #ffffff;
+  }
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-ink-700 bg-ink-850 px-6 py-3 text-base font-semibold text-white transition hover:border-accent-blue/60 hover:bg-ink-800 hover:-translate-y-0.5;
+  }
+  .card {
+    @apply rounded-2xl border border-ink-700/70 bg-ink-900 p-6 shadow-sm transition;
+  }
+  .badge {
+    @apply inline-flex items-center gap-2 rounded-full border border-ink-700 bg-ink-850 px-4 py-1.5 text-sm font-medium text-slate-300;
+  }
+  .section {
+    @apply py-16 sm:py-20;
+  }
+  .h2 {
+    @apply text-3xl font-bold tracking-tight text-white sm:text-4xl;
+  }
+  .prose-site p {
+    @apply mb-4 leading-relaxed text-slate-300;
+  }
+  .prose-site ul {
+    @apply mb-4 list-disc space-y-2 pl-6 text-slate-300;
+  }
+  .prose-site h3 {
+    @apply mb-3 mt-8 text-xl font-semibold text-white;
+  }
+  .kicker {
+    @apply text-sm font-semibold uppercase tracking-widest text-accent-cyan;
+  }
+}
+
+@layer utilities {
+  .text-on-accent {
+    color: #ffffff;
+  }
+}
+
+/* ---------- Motion ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes hero-pan {
+  0%, 100% { background-position: 0% 40%; }
+  50% { background-position: 100% 60%; }
+}
+.hero-glow {
+  background-image:
+    radial-gradient(60% 80% at 15% 20%, rgb(var(--c-accent-blue) / 0.16), transparent 65%),
+    radial-gradient(50% 70% at 85% 25%, rgb(var(--c-accent-cyan) / 0.14), transparent 60%),
+    radial-gradient(45% 60% at 55% 90%, rgb(var(--c-accent-amber) / 0.10), transparent 60%);
+  background-size: 160% 160%;
+  animation: hero-pan 16s ease-in-out infinite;
+}
+
+@keyframes marquee-x {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee {
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  gap: 0.75rem;
+  animation: marquee-x 36s linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .hero-glow,
+  .marquee-track,
+  .whatsapp-fab::after {
+    animation: none;
+  }
+  .wizard-step {
+    animation: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+@keyframes wizard-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+.wizard-step {
+  animation: wizard-in 0.3s ease both;
+  border: none;
+  padding: 0;
+  margin-inline: 0;
+  min-inline-size: 0;
+}
+
+/* ---------- WhatsApp floating button ---------- */
+.whatsapp-fab {
+  background-color: #25d366;
+  bottom: max(1.25rem, env(safe-area-inset-bottom));
+  right: max(1.25rem, env(safe-area-inset-right));
+}
+.whatsapp-fab::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5);
+  animation: whatsapp-pulse 2.4s ease-out infinite;
+}
+@keyframes whatsapp-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.45); }
+  70% { box-shadow: 0 0 0 16px rgba(37, 211, 102, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+}
